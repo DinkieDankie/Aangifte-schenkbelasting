@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aangifte Schenkbelasting 2026 — Slimme Route</title>
+<style>
+  :root {
+    --bd-blauw:       #154273;
+    --bd-blauw-mid:   #1261A3;
+    --bd-blauw-licht: #D9E5F3;
+    --bd-blauw-xlt:   #EEF4FB;
+    --bd-oranje:      #F39200;
+    --bd-groen:       #39870C;
+    --bd-rood:        #D52B1E;
+    --bd-grijs:       #767676;
+    --bd-grijs-licht: #F5F5F5;
+    --bd-grijs-rand:  #D0D0D0;
+    --bd-wit:         #FFFFFF;
+    --bd-tekst:       #1A1A1A;
+    --bd-rand:        #C8D8EA;
+    --radius:         4px;
+    --shadow:         0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'RO Sans', 'Arial', sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--bd-tekst);
+    background: var(--bd-grijs-licht);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .bd-header {
+    background: var(--bd-blauw);
+    color: white;
+    padding: 0;
+    border-bottom: 4px solid var(--bd-oranje);
+  }
+  .header-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo-shield {
+    width: 44px; height: 44px; flex-shrink: 0;
+  }
+  .logo-text { display: flex; flex-direction: column; }
+  .logo-main { font-size: 20px; font-weight: 700; letter-spacing: .3px; }
+  .logo-sub  { font-size: 13px; opacity: .85; }
+
+  /* ── DEMO-BANNER ── */
+  .demo-banner {
+    background: #FFF3CD;
+    border-bottom: 2px solid var(--bd-oranje);
+    padding: 8px 24px;
+    font-size: 13px;
+    color: #7A5500;
+    text-align: center;
+  }
+  .demo-banner strong { color: var(--bd-blauw); }
+
+  /* ── CONTAINER ── */
+  .container {
+    max-width: 860px;
+    margin: 32px auto;
+    padding: 0 16px 64px;
+  }
+
+  /* ── SKIP COUNTER ── */
+  .skip-bar {
+    background: var(--bd-blauw);
+    color: white;
+    border-radius: var(--radius);
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .skip-bar .skip-label { font-size: 14px; opacity: .9; }
+  .skip-bar .skip-numbers {
+    display: flex;
+    gap: 24px;
+  }
+  .skip-stat { text-align: center; }
+  .skip-stat .num { font-size: 28px; font-weight: 700; color: var(--bd-oranje); display: block; }
+  .skip-stat .lbl { font-size: 11px; opacity: .8; }
+
+  /* ── PROGRESS STEPS ── */
+  .progress-steps {
+    display: flex;
+    align-items: center;
+    margin-bottom: 28px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 90px;
+    position: relative;
+  }
+  .step-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 16px;
+    left: calc(50% + 16px);
+    width: calc(100% - 32px);
+    height: 2px;
+    background: var(--bd-grijs-rand);
+    z-index: 0;
+  }
+  .step-item.done:not(:last-child)::after { background: var(--bd-blauw-mid); }
+  .step-item.skipped:not(:last-child)::after { background: var(--bd-grijs-rand); }
+  .step-circle {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--bd-grijs-rand);
+    color: var(--bd-grijs);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    position: relative; z-index: 1;
+    border: 2px solid var(--bd-grijs-rand);
+  }
+  .step-item.active .step-circle {
+    background: var(--bd-blauw);
+    color: white;
+    border-color: var(--bd-blauw);
+  }
+  .step-item.done .step-circle {
+    background: var(--bd-groen);
+    color: white;
+    border-color: var(--bd-groen);
+  }
+  .step-item.skipped .step-circle {
+    background: var(--bd-grijs-licht);
+    color: var(--bd-grijs);
+    border-color: var(--bd-grijs-rand);
+    font-size: 11px;
+  }
+  .step-label {
+    font-size: 11px;
+    margin-top: 5px;
+    text-align: center;
+    color: var(--bd-grijs);
+    max-width: 85px;
+  }
+  .step-item.active .step-label { color: var(--bd-blauw); font-weight: 700; }
+  .step-item.done .step-label { color: var(--bd-groen); }
+
+  /* ── CARD ── */
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px 36px;
+    margin-bottom: 20px;
+  }
+  .card h2 {
+    font-size: 20px;
+    color: var(--bd-blauw);
+    margin-bottom: 6px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--bd-blauw-licht);
+  }
+  .card .step-nr {
+    font-size: 12px;
+    color: var(--bd-grijs);
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  /* ── FORM ELEMENTS ── */
+  .vraag {
+    margin-bottom: 22px;
+  }
+  .vraag label, .vraag legend {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--bd-tekst);
+    font-size: 15px;
+  }
+  .vraag .toelichting {
+    font-size: 13px;
+    color: var(--bd-grijs);
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    background: var(--bd-blauw-xlt);
+    border-left: 3px solid var(--bd-blauw-mid);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .vraag input[type="text"],
+  .vraag input[type="date"],
+  .vraag input[type="number"],
+  .vraag input[type="email"],
+  .vraag select,
+  .vraag textarea {
+    width: 100%;
+    max-width: 480px;
+    padding: 10px 12px;
+    border: 1.5px solid var(--bd-grijs-rand);
+    border-radius: var(--radius);
+    font-size: 15px;
+    color: var(--bd-tekst);
+    background: white;
+    transition: border-color .2s;
+    outline: none;
+  }
+  .vraag input:focus, .vraag select:focus, .vraag textarea:focus {
+    border-color: var(--bd-blauw-mid);
+    box-shadow: 0 0 0 3px rgba(18,97,163,.15);
+  }
+  .vraag input[type="number"] { max-width: 220px; }
+  .euro-wrap { display: flex; align-items: center; gap: 8px; }
+  .euro-wrap::before {
+    content: '€';
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--bd-grijs);
+  }
+  .euro-wrap input { max-width: 200px; }
+
+  /* Radio / checkbox groups */
+  .radio-group, .check-group { display: flex; flex-direction: column; gap: 8px; }
+  .radio-group label, .check-group label {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-weight: 400; cursor: pointer;
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    border: 1.5px solid transparent;
+    transition: all .15s;
+  }
+  .radio-group label:hover, .check-group label:hover {
+    background: var(--bd-blauw-xlt);
+    border-color: var(--bd-rand);
+  }
+  .radio-group label.selected, .check-group label.checked {
+    background: var(--bd-blauw-xlt);
+    border-color: var(--bd-blauw-mid);
+    font-weight: 600;
+  }
+  .radio-group input[type="radio"],
+  .check-group input[type="checkbox"] {
+    width: auto; max-width: none;
+    margin-top: 2px;
+    accent-color: var(--bd-blauw);
+    flex-shrink: 0;
+  }
+
+  /* ── CONDITIONAL BLOCKS ── */
+  .conditional { display: none; }
+  .conditional.visible { display: block; }
+
+  /* ── SKIP NOTICE ── */
+  .skip-notice {
+    background: #E8F5E3;
+    border: 1.5px solid #39870C;
+    border-radius: var(--radius);
+    padding: 10px 16px;
+    font-size: 13px;
+    color: #1D500A;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .skip-notice.visible { display: flex; align-items: center; gap: 8px; }
+  .skip-notice::before { content: '✓'; font-size: 16px; font-weight: 700; color: var(--bd-groen); }
+
+  /* ── SECTION DIVIDER ── */
+  .sub-section {
+    background: var(--bd-blauw-xlt);
+    border-left: 4px solid var(--bd-blauw-mid);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 16px 20px;
+    margin: 20px 0 8px;
+  }
+  .sub-section h3 { font-size: 15px; color: var(--bd-blauw); margin-bottom: 12px; }
+
+  /* ── BELASTING BEREKENING ── */
+  .belasting-card {
+    background: var(--bd-blauw);
+    color: white;
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-top: 24px;
+  }
+  .belasting-card h3 { font-size: 16px; margin-bottom: 12px; opacity: .9; }
+  .belasting-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255,255,255,.15);
+  }
+  .belasting-row:last-child { border-bottom: none; }
+  .belasting-row.total {
+    font-size: 18px; font-weight: 700;
+    padding-top: 10px; margin-top: 6px;
+    color: var(--bd-oranje);
+    border-top: 2px solid rgba(255,255,255,.3);
+    border-bottom: none;
+  }
+
+  /* ── NAVIGATION ── */
+  .wizard-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+  }
+  .btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .btn-primary {
+    background: var(--bd-blauw);
+    color: white;
+  }
+  .btn-primary:hover { background: var(--bd-blauw-mid); }
+  .btn-secondary {
+    background: white;
+    color: var(--bd-blauw);
+    border: 2px solid var(--bd-blauw);
+  }
+  .btn-secondary:hover { background: var(--bd-blauw-licht); }
+  .btn:disabled { opacity: .4; cursor: not-allowed; }
+  .btn-success {
+    background: var(--bd-groen);
+    color: white;
+  }
+  .btn-success:hover { background: #2d6e09; }
+
+  /* ── SAMENVATTING ── */
+  .samenvatting-tabel {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 16px;
+  }
+  .samenvatting-tabel th {
+    background: var(--bd-blauw);
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .samenvatting-tabel td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--bd-grijs-rand);
+    vertical-align: top;
+  }
+  .samenvatting-tabel tr:nth-child(even) td { background: var(--bd-grijs-licht); }
+  .samenvatting-tabel td:first-child { color: var(--bd-grijs); font-size: 13px; width: 40%; }
+
+  .badge-overgeslagen {
+    display: inline-block;
+    background: var(--bd-groen);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  /* ── ALERT ── */
+  .alert {
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+  .alert-info {
+    background: var(--bd-blauw-xlt);
+    border: 1px solid var(--bd-rand);
+    color: var(--bd-blauw);
+  }
+  .alert-warning {
+    background: #FFF3CD;
+    border: 1px solid #FFD166;
+    color: #7A5500;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .card { padding: 20px 16px; }
+    .skip-bar { flex-direction: column; align-items: flex-start; }
+    .step-label { display: none; }
+    .header-inner { padding: 10px 16px; }
+  }
+
+  /* Steps display */
+  .wizard-step { display: none; }
+  .wizard-step.active { display: block; }
+
+  /* Input row */
+  .input-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .input-row .vraag { flex: 1; min-width: 140px; }
+
+  /* Fieldset reset */
+  fieldset { border: none; padding: 0; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="bd-header">
+  <div class="header-inner">
+    <svg class="logo-shield" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+      <path d="M22 2 L40 9 L40 24 C40 34 32 41 22 43 C12 41 4 34 4 24 L4 9 Z" fill="#1261A3"/>
+      <path d="M22 4 L38 10.5 L38 24 C38 33 30.5 39.5 22 41.5 C13.5 39.5 6 33 6 24 L6 10.5 Z" fill="none" stroke="white" stroke-width="1"/>
+      <text x="22" y="26" text-anchor="middle" fill="white" font-size="13" font-weight="700" font-family="Arial">BD</text>
+    </svg>
+    <div class="logo-text">
+      <span class="logo-main">Belastingdienst</span>
+      <span class="logo-sub">Aangifte Schenkbelasting 2026 — Slimme Route (concept)</span>
+    </div>
+  </div>
+</header>
+
+<div class="demo-banner">
+  <strong>Dit is een concept mock-up</strong> — bedoeld om te demonstreren hoe conditionele logica het formulier aanzienlijk kan verkorten.
+  Het huidige papieren formulier bevat <strong>~115 velden</strong> verspreid over 15 pagina's.
+</div>
+
+<div class="container">
+
+  <!-- SKIP COUNTER -->
+  <div class="skip-bar">
+    <div class="skip-label">Slimme route — u ziet alleen wat voor ú relevant is</div>
+    <div class="skip-numbers">
+      <div class="skip-stat">
+        <span class="num" id="cntTotaal">115</span>
+        <span class="lbl">velden in het formulier</span>
+      </div>
+      <div class="skip-stat">
+        <span class="num" id="cntRelevant" style="color:white">—</span>
+        <span class="lbl">relevant voor uw situatie</span>
+      </div>
+      <div class="skip-stat">
+        <span class="num" id="cntOvergeslagen" style="color:#F39200">0</span>
+        <span class="lbl">velden overgeslagen</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROGRESS STEPS -->
+  <div class="progress-steps" id="progressSteps">
+    <!-- Rendered by JS -->
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- STAP 1 — ONTVANGER                              -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="wizard-step active" id="step-1">
+    <div class="card">
+      <span class="step-nr">Stap 1 van 6</span>
+      <h2>Gegevens ontvanger</h2>
+
+      <div class="vraag">
+        <label>1a. Is de ontvanger een instelling of bedrijf?</label>
+        <fieldset class="radio-group" id="rg-ontvanger-type">
+          <label><input type="radio" name="ontvanger_type" value="persoon"> Nee, de ontvanger is een natuurlijk persoon</label>
+          <label><input type="radio" name="ontvanger_type" value="instelling"> Ja, het is een instelling of bedrijf</label>
+        </fieldset>
+      </div>
+
+      <!-- Instelling -->
+      <div class="conditional" id="blok-ontvanger-instelling">
+        <div class="skip-notice visible" id="skip-ontvanger-instelling">
+          Vragen 1d t/m 1j (BSN, naam, geboortedatum, relatie) worden overgeslagen — niet van toepassing op instellingen.
+        </div>
+        <div class="vraag">
+          <label>1b. RSIN / fiscaal identificatienummer</label>
+          <input type="text" id="ontvanger_rsin" placeholder="123456789">
+        </div>
+        <div class="vraag">
+          <label>1c. Naam instelling of bedrijf</label>
+          <input type="text" id="ontvanger_naam_instelling">
+        </div>
+      </div>
+
+      <!-- Persoon -->
+      <div class="conditional" id="blok-ontvanger-persoon">
+        <div class="vraag">
+          <label>1d. Burgerservicenummer (BSN)</label>
+          <div class="toelichting">Heeft de ontvanger geen BSN? Zie de toelichting bij vraag 1.</div>
+          <input type="text" id="ontvanger_bsn" maxlength="9" placeholder="000000000">
+        </div>
+        <div class="input-row">
+          <div class="vraag">
+            <label>1e. Voorletters en tussenvoegsel</label>
+            <input type="text" id="ontvanger_voorletters" placeholder="J.A.">
+          </div>
+          <div class="vraag">
+            <label>Achternaam</label>
+            <input type="text" id="ontvanger_achternaam">
+          </div>
+        </div>
+        <div class="vraag">
+          <label>1f. Geboortedatum</label>
+          <input type="date" id="ontvanger_geboortedatum">
+        </div>
+        <div class="vraag">
+          <label>1g. Relatie tussen ontvanger en schenker (op datum schenking)</label>
+          <select id="ontvanger_relatie">
+            <option value="">— selecteer relatie —</option>
+            <option value="partner">Echtgenoot of geregistreerde partner</option>
+            <option value="samenwonend">Samenwonend partner (voor schenkbelasting)</option>
+            <option value="kind">Kind</option>
+            <option value="stiefkind">Stiefkind</option>
+            <option value="pleegkind">Pleegkind</option>
+            <option value="kleinkind">Kleinkind of achterkleinkind</option>
+            <option value="aanstaande_partner">Aanstaande echtgenoot of geregistreerde partner</option>
+            <option value="ex_partner">Ex-partner</option>
+            <option value="overig">Overige relatie</option>
+          </select>
+        </div>
+
+        <!-- 1h–1i: aanstaande partner -->
+        <div class="conditional" id="blok-aanstaande-partner">
+          <div class="sub-section">
+            <h3>Nadere vragen voor aanstaande partner</h3>
+            <div class="vraag">
+              <label>1h. Zijn ontvanger en schenker binnen 1 jaar na de schenking gehuwd of geregistreerd partner geworden?</label>
+              <fieldset class="radio-group" id="rg-1h">
+                <label><input type="radio" name="q1h" value="nee"> Nee</label>
+                <label><input type="radio" name="q1h" value="ja"> Ja</label>
+              </fieldset>
+            </div>
+            <div class="vraag">
+              <label>1i. Is de aanstaande partner vóór het huwelijk / partnerschap (binnen 6 maanden daarvóór) overleden?</label>
+              <fieldset class="radio-group" id="rg-1i">
+                <label><input type="radio" name="q1i" value="nee"> Nee</label>
+                <label><input type="radio" name="q1i" value="ja"> Ja</label>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1j: ex-partner -->
+        <div class="conditional" id="blok-ex-partner">
+          <div class="sub-section">
+            <h3>Nadere vraag voor ex-partner</h3>
+            <div class="vraag">
+              <label>1j. Is de schenking gedaan op basis van afspraken uit het echtscheidingsconvenant?</label>
+              <fieldset class="radio-group" id="rg-1j">
+                <label><input type="radio" name="q1j" value="nee"> Nee</label>
+                <label><input type="radio" name="q1j" value="ja"> Ja</label>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skip notice: overige relaties -->
+        <div class="skip-notice" id="skip-1h1j">
+          Vragen 1h, 1i en 1j (aanstaande/ex-partner specificaties) worden overgeslagen — niet van toepassing op de gekozen relatie.
+        </div>
+      </div>
+
+    </div>
+    <div class="wizard-nav">
+      <button class="btn btn-secondary" disabled>← Vorige</button>
+      <button class="btn btn-primary" id="btn-1-next">Volgende →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- STAP 2 — SCHENKER                               -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="wizard-step" id="step-2">
+    <div class="card">
+      <span class="step-nr">Stap 2 van 6</span>
+      <h2>Gegevens schenker</h2>
+
+      <div class="vraag">
+        <label>2a. Is de schenker een instelling of bedrijf?</label>
+        <fieldset class="radio-group" id="rg-schenker-type">
+          <label><input type="radio" name="schenker_type" value="persoon"> Nee, de schenker is een natuurlijk persoon</label>
+          <label><input type="radio" name="schenker_type" value="instelling"> Ja, het is een instelling of bedrijf</label>
+        </fieldset>
+      </div>
+
+      <!-- Schenker instelling -->
+      <div class="conditional" id="blok-schenker-instelling">
+        <div class="skip-notice visible">
+          Vragen 2d t/m 2f (BSN, naam, geboortedatum) worden overgeslagen — niet van toepassing op instellingen.
+        </div>
+        <div class="vraag">
+          <label>2b. RSIN / fiscaal identificatienummer</label>
+          <input type="text" id="schenker_rsin" placeholder="123456789">
+        </div>
+        <div class="vraag">
+          <label>2c. Naam instelling of bedrijf</label>
+          <input type="text" id="schenker_naam_instelling">
+        </div>
+      </div>
+
+      <!-- Schenker persoon -->
+      <div class="conditional" id="blok-schenker-persoon">
+        <div class="vraag">
+          <label>2d. Burgerservicenummer (BSN)</label>
+          <input type="text" id="schenker_bsn" maxlength="9" placeholder="000000000">
+        </div>
+        <div class="input-row">
+          <div class="vraag">
+            <label>2e. Voorletters en tussenvoegsel</label>
+            <input type="text" id="schenker_voorletters">
+          </div>
+          <div class="vraag">
+            <label>Achternaam</label>
+            <input type="text" id="schenker_achternaam">
+          </div>
+        </div>
+        <div class="vraag">
+          <label>2f. Geboortedatum schenker</label>
+          <input type="date" id="schenker_geboortedatum">
+        </div>
+      </div>
+
+      <!-- APV -->
+      <div class="vraag" style="margin-top:24px;">
+        <label>2g. Komt de schenking uit een afgezonderd particulier vermogen (APV)?</label>
+        <div class="toelichting">Denk aan een trust of stichting particulier fonds in het buitenland.</div>
+        <fieldset class="radio-group" id="rg-apv">
+          <label><input type="radio" name="apv" value="nee"> Nee</label>
+          <label><input type="radio" name="apv" value="ja"> Ja</label>
+        </fieldset>
+      </div>
+
+      <div class="conditional" id="blok-apv">
+        <div class="sub-section">
+          <h3>Gegevens APV</h3>
+          <div class="vraag"><label>2h. Naam APV</label><input type="text" id="apv_naam"></div>
+          <div class="vraag"><label>2i. RSIN / identificatienummer APV</label><input type="text" id="apv_rsin"></div>
+          <div class="vraag"><label>2j. Rechtsvorm APV</label><input type="text" id="apv_rechtsvorm" placeholder="bijv. Trust, SPF, Foundation"></div>
+          <div class="vraag"><label>2k. Landcode APV</label><input type="text" id="apv_landcode" maxlength="2" placeholder="bijv. NL, CH, LU"></div>
+        </div>
+      </div>
+
+      <div class="skip-notice" id="skip-apv">
+        Vragen 2h t/m 2k (APV-gegevens) worden overgeslagen — geen APV van toepassing.
+      </div>
+    </div>
+    <div class="wizard-nav">
+      <button class="btn btn-secondary" id="btn-2-prev">← Vorige</button>
+      <button class="btn btn-primary" id="btn-2-next">Volgende →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- STAP 3 — DE SCHENKING                           -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="wizard-step" id="step-3">
+    <div class="card">
+      <span class="step-nr">Stap 3 van 6</span>
+      <h2>Gegevens van de schenking</h2>
+
+      <div class="alert alert-info">
+        Bij meerdere schenkingen van dezelfde schenker vult u voor elke schenking een aparte aangifte in.
+      </div>
+
+      <div class="input-row">
+        <div class="vraag">
+          <label>3a. Datum van de schenking</label>
+          <input type="date" id="schenking_datum" min="2026-01-01" max="2026-12-31">
+        </div>
+        <div class="vraag">
+          <label>3b. Is de schenking herroepbaar?</label>
+          <fieldset class="radio-group" id="rg-herroepbaar" style="flex-direction:row; gap: 20px;">
+            <label><input type="radio" name="herroepbaar" value="nee"> Nee</label>
+            <label><input type="radio" name="herroepbaar" value="ja"> Ja</label>
+          </fieldset>
+        </div>
+      </div>
+
+      <div class="vraag">
+        <label>3c. Heeft u dit jaar al eerder een schenking ontvangen van dezelfde schenker?</label>
+        <div class="toelichting">Denk ook aan schenkingen lager dan de jaarlijkse vrijstelling.</div>
+        <fieldset class="radio-group" id="rg-eerder" style="flex-direction:row; gap: 20px;">
+          <label><input type="radio" name="eerder" value="nee"> Nee</label>
+          <label><input type="radio" name="eerder" value="ja"> Ja</label>
+        </fieldset>
+      </div>
+
+      <div class="vraag">
+        <label>3d. Wat voor soort schenking is dit?</label>
+        <div class="toelichting">Uw keuze bepaalt welke vervolgvragen worden getoond. Alle andere categorieën worden automatisch overgeslagen.</div>
+        <select id="soort_schenking">
+          <option value="">— selecteer soort schenking —</option>
+          <option value="geld">Geld (contanten / overboeking)</option>
+          <option value="onroerende_zaak">Woning of andere onroerende zaak / NSW-landgoed</option>
+          <option value="kwijtschelding">Kwijtschelding van een schuld of lening</option>
+          <option value="effecten">Aandelen en andere effecten</option>
+          <option value="ondernemisvermogen">Ondernemingsvermogen</option>
+          <option value="schuldigerkenning">Schuldigerkenning uit vrijgevigheid (schenking op papier)</option>
+          <option value="vruchtgebruik">Vruchtgebruik</option>
+          <option value="periodieke_uitkering">Periodieke uitkering</option>
+          <option value="roerende_zaak">Roerende zaak (auto, kunst, antiek)</option>
+          <option value="verzekering">Verzekeringsproduct (nieuw per 2026)</option>
+          <option value="andere_schenking">Andere schenking</option>
+        </select>
+      </div>
+
+      <!-- Soort-specifieke skip-notices en velden -->
+
+      <!-- 3e: GELD -->
+      <div class="conditional" id="blok-geld">
+        <div class="skip-notice visible">
+          Vragen 3f t/m 3o (9 andere categorieën, ~70 velden) worden overgeslagen — alleen van toepassing op andere soorten schenkingen.
+        </div>
+        <div class="sub-section">
+          <h3>3e. Geld</h3>
+          <div class="vraag">
+            <label>Bedrag van de schenking</label>
+            <div class="toelichting">Geef het volledige bedrag op. De jaarlijkse vrijstelling (€&nbsp;6.908 voor kinderen, € 2.769 overig) wordt automatisch toegepast.</div>
+            <div class="euro-wrap"><input type="number" id="bedrag_geld" min="0" placeholder="0"></div>
+          </div>
+          <div id="belasting-preview-geld"></div>
+        </div>
+      </div>
+
+      <!-- 3f: ONROERENDE ZAAK -->
+      <div class="conditional" id="blok-onroerende-zaak">
+        <div class="skip-notice visible">
+          Vragen 3e en 3g t/m 3o (10 andere categorieën) worden overgeslagen.
+        </div>
+        <div class="sub-section">
+          <h3>3f. Woning of onroerende zaak</h3>
+          <div class="vraag"><label>Straat, huisnummer (NL) of buitenlands adres</label><input type="text" id="oz_adres"></div>
+          <div class="input-row">
+            <div class="vraag"><label>Postcode</label><input type="text" id="oz_postcode" maxlength="6" placeholder="1234AB"></div>
+            <div class="vraag"><label>Plaats</label><input type="text" id="oz_plaats"></div>
+          </div>
+          <div class="vraag">
+            <label>3f.2 Is de onroerende zaak een woning?</label>
+            <fieldset class="radio-group" id="rg-oz-woning" style="flex-direction:row; gap:20px;">
+              <label><input type="radio" name="oz_woning" value="nee"> Nee</label>
+              <label><input type="radio" name="oz_woning" value="ja"> Ja</label>
+            </fieldset>
+          </div>
+          <div class="conditional" id="blok-oz-woz">
+            <div class="vraag">
+              <label>3f.4 WOZ-waarde van de woning</label>
+              <div class="euro-wrap"><input type="number" id="oz_woz" min="0" placeholder="0"></div>
+            </div>
+            <div class="vraag">
+              <label>3f.5 Is de woning verhuurd of verpacht?</label>
+              <fieldset class="radio-group" id="rg-oz-verhuur" style="flex-direction:row; gap:20px;">
+                <label><input type="radio" name="oz_verhuur" value="nee"> Nee</label>
+                <label><input type="radio" name="oz_verhuur" value="ja"> Ja</label>
+              </fieldset>
+            </div>
+            <div class="conditional" id="blok-oz-verhuurdetails">
+              <div class="vraag">
+                <label>Jaarlijkse huur / pacht</label>
+                <div class="euro-wrap"><input type="number" id="oz_huur" min="0" placeholder="0"></div>
+              </div>
+              <div class="vraag">
+                <label>Is de huur marktconform?</label>
+                <fieldset class="radio-group" style="flex-direction:row; gap:20px;">
+                  <label><input type="radio" name="oz_marktconform" value="nee"> Nee</label>
+                  <label><input type="radio" name="oz_marktconform" value="ja"> Ja</label>
+                </fieldset>
+              </div>
+              <div class="vraag">
+                <label>Is de ontvanger (of diens partner) de huurder?</label>
+                <fieldset class="radio-group" style="flex-direction:row; gap:20px;">
+                  <label><input type="radio" name="oz_huurder" value="nee"> Nee</label>
+                  <label><input type="radio" name="oz_huurder" value="ja"> Ja</label>
+                </fieldset>
+              </div>
+              <div class="alert alert-warning" style="margin-top:8px;">
+                <strong>Let op (nieuw per 2026):</strong> Bij verhuur aan een gelieerde partij (bijv. uw kind) met een niet-marktconforme huur geldt <em>geen</em> leegwaarderatio — altijd 100% WOZ-waarde (art. 10a lid 3 Uitvoeringsbesluit SW 1956).
+              </div>
+            </div>
+          </div>
+          <div class="vraag">
+            <label>3f.11 Heeft u de gehele onroerende zaak geschonken gekregen?</label>
+            <fieldset class="radio-group" style="flex-direction:row; gap:20px;">
+              <label><input type="radio" name="oz_geheel" value="ja"> Ja</label>
+              <label><input type="radio" name="oz_geheel" value="nee"> Nee, een aandeel</label>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3g: KWIJTSCHELDING -->
+      <div class="conditional" id="blok-kwijtschelding">
+        <div class="skip-notice visible">
+          Vragen 3e en 3f en 3h t/m 3o (10 andere categorieën) worden overgeslagen.
+        </div>
+        <div class="sub-section">
+          <h3>3g. Kwijtschelding van schuld of lening</h3>
+          <div class="vraag">
+            <label>Bedrag van de kwijtgescholden schuld of lening</label>
+            <div class="euro-wrap"><input type="number" id="bedrag_kwijtschelding" min="0" placeholder="0"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3h: EFFECTEN -->
+      <div class="conditional" id="blok-effecten">
+        <div class="skip-notice visible">
+          Vragen 3e, 3f, 3g en 3i t/m 3o worden overgeslagen.
+        </div>
+        <div class="sub-section">
+          <h3>3h. Effecten</h3>
+          <div class="vraag">
+            <label>Soort effecten</label>
+            <fieldset class="radio-group" id="rg-effecten-soort">
+              <label><input type="radio" name="effecten_soort" value="obligaties"> Obligaties</label>
+              <label><input type="radio" name="effecten_soort" value="beursgenoteerd"> Beursgenoteerde aandelen</label>
+              <label><input type="radio" name="effecten_soort" value="niet_beursgenoteerd"> Niet-beursgenoteerde aandelen</label>
+              <label><input type="radio" name="effecten_soort" value="overig"> Andere effecten</label>
+            </fieldset>
+          </div>
+          <div class="vraag">
+            <label>Waarde van de effecten</label>
+            <div class="euro-wrap"><input type="number" id="bedrag_effecten" min="0" placeholder="0"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3i: ONDERNEMINGSVERMOGEN -->
+      <div class="conditional" id="blok-onderneming">
+        <div class="skip-notice visible">
+          Vragen 3e t/m 3h en 3j t/m 3o worden overgeslagen.
+        </div>
+        <div class="sub-section">
+          <h3>3i. Ondernemingsvermogen</h3>
+          <div class="alert alert-warning">
+            Wij raden u aan een adviseur in te schakelen voor de vragen over ondernemingsvermogen.
+          </div>
+          <div class="input-row">
+            <div class="vraag"><label>3i.1 BSN/RSIN onderneming</label><input type="text" id="ov_bsn"></div>
+            <div class="vraag"><label>3i.2 Naam onderneming</label><input type="text" id="ov_naam"></div>
+          </div>
+          <div class="vraag">
+            <label>3i.3 Rechtsvorm</label>
+            <select id="ov_rechtsvorm">
+              <option value="">— selecteer —</option>
+              <option value="bv">Besloten vennootschap (bv)</option>
+              <option value="nv">Naamloze vennootschap (nv)</option>
+              <option value="cv">Commanditaire vennootschap (cv)</option>
+              <option value="vof">Vennootschap onder firma (vof)</option>
+              <option value="maatschap">Maatschap</option>
+              <option value="eenmanszaak">Eenmanszaak</option>
+              <option value="overig">Overig</option>
+            </select>
+          </div>
+          <div class="vraag">
+            <label>3i.4 Goingconcernwaarde overgedragen aandeel onderneming</label>
+            <div class="euro-wrap"><input type="number" id="ov_gcwaarde" min="0" placeholder="0"></div>
+          </div>
+          <div class="vraag">
+            <label>3i.13 Wilt u gebruikmaken van de bedrijfsopvolgingsregeling (BOR)?</label>
+            <fieldset class="radio-group" id="rg-bor" style="flex-direction:row; gap:20px;">
+              <label><input type="radio" name="bor" value="nee"> Nee</label>
+              <label><input type="radio" name="bor" value="ja"> Ja (aanvullende BOR-vragen volgen)</label>
+            </fieldset>
+          </div>
+          <div class="conditional" id="blok-bor">
+            <div class="vraag">
+              <label>3i.20 Voldoet het overgedragen deel geheel aan de bezitseis (art. 35d SW)?</label>
+              <fieldset class="radio-group" style="flex-direction:row; gap:20px;">
+                <label><input type="radio" name="bezitseis" value="ja"> Ja</label>
+                <label><input type="radio" name="bezitseis" value="nee"> Nee (gedeeltelijk)</label>
+              </fieldset>
+            </div>
+            <div class="vraag">
+              <label>3i.21 Waarde voorwaardelijke BOR-vrijstelling</label>
+              <div class="euro-wrap"><input type="number" id="bor_vrijstelling" min="0" placeholder="0"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3j: SCHULDIGERKENNING -->
+      <div class="conditional" id="blok-schuldigerkenning">
+        <div class="skip-notice visible">
+          Vragen 3e t/m 3i en 3k t/m 3o worden overgeslagen.
+        </div>
+        <div class="sub-section">
+          <h3>3j. Schuldigerkenning uit vrijgevigheid (schenking op papier)</h3>
+          <div class="alert alert-warning">
+            <strong>Let op:</strong> vereist een notariële akte (art. 7:177 BW). Rente dient jaarlijks ≥ 6% te bedragen (beleidsmatige ondergrens) om art. 10 SW te voorkomen.
+          </div>
+          <div class="vraag">
+            <label>3j.1 Bedrag van de schuldigerkenning</label>
+            <div class="euro-wrap"><input type="number" id="bedrag_schuldigerkenning" min="0" placeholder="0"></div>
+          </div>
+          <div class="input-row">
+            <div class="vraag">
+              <label>3j.2 Rentepercentage (%)</label>
+              <input type="number" id="schuld_rente" min="0" max="99" step="0.1" placeholder="6.0">
+            </div>
+            <div class="vraag">
+              <label>Soort rente</label>
+              <select id="schuld_rente_soort">
+                <option value="enkelvoudig">Enkelvoudige rente</option>
+                <option value="samengesteld">Samengestelde rente</option>
+              </select>
+            </div>
+          </div>
+          <div class="vraag">
+            <label>3j.3 Datum notariële akte</label>
+            <input type="date" id="schuld_datum_akte">
+          </div>
+        </div>
+      </div>
+
+      <!-- 3k: VRUCHTGEBRUIK -->
+      <div class="conditional" id="blok-vruchtgebruik">
+        <div class="skip-notice visible">
+          Vragen 3e t/m 3j en 3l t/m 3o worden overgeslagen.
+        </div>
+        <div class="sub-section">
+          <h3>3k. Vruchtgebruik</h3>
+          <div class="vraag">
+            <label>3k.1 Waarde van het vruchtgebruik</label>
+            <div class="euro-wrap"><input type="number" id="bedrag_vruchtgebruik" min="0" placeholder="0"></div>
+          </div>
+          <div class="vraag">
+            <label>3k.2 Is er sprake van een stamkapitaal?</label>
+            <fieldset class="radio-group" style="flex-direction:row; gap:20px;">
+              <label><input type="radio" name="stamkapitaal" value="nee"> Nee</label>
+              <label><input type="radio" name="stamkapitaal" value="ja"> Ja</label>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3l: PERIODIEKE UITKERING -->
+      <div class="conditional" id="blok-periodieke-uitkering">
+        <div class="skip-notice visible">
+          Vragen 3e t/m 3k en 3m t/m 3o worden overgeslagen.
+        </div>
+        <div class="sub-section">
+          <h3>3l. Periodieke uitkering</h3>
+          <div class="vraag">
+            <label>3l.1 Hangt de periodieke uitkering af van iemands leven?</label>
+            <fieldset class="radio-group" style="flex-direction:row; gap:20px;">
+              <label><input type="radio" name="pu_leven" value="nee"> Nee</label>
+              <label><input type="radio" name="pu_leven" value="ja"> Ja (geef BSN en geboortedatum van die persoon op)</label>
+            </fieldset>
+          </div>
+          <div class="vraag">
+            <label>3l.2 Bedrag per jaar</label>
+            <div class="euro-wrap"><input type="number" id="pu_jaarbedrag" min="0" placeholder="0"></div>
+          </div>
+          <div class="input-row">
+            <div class="vraag"><label>3l.3 Ingangsdatum</label><input type="date" id="pu_ingangsdatum"></div>
+            <div class="vraag"><label>3l.4 Einddatum (indien bekend)</label><input type="date" id="pu_einddatum"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3m: ROERENDE ZAAK -->
+      <div class="conditional" id="blok-roerende-zaak">
+        <div class="skip-notice visible">
+          Vragen 3e t/m 3l en 3n en 3o worden overgeslagen.
+        </div>
+        <div class="sub-section">
+          <h3>3m. Roerende zaak</h3>
+          <div class="vraag">
+            <label>Soort roerende zaak</label>
+            <fieldset class="radio-group" id="rg-roerende-soort" style="flex-direction:row; flex-wrap:wrap; gap:12px;">
+              <label><input type="radio" name="rz_soort" value="inboedel"> Inboedel</label>
+              <label><input type="radio" name="rz_soort" value="kunst"> Kunst en antiek</label>
+              <label><input type="radio" name="rz_soort" value="vervoer"> Vervoermiddel</label>
+              <label><input type="radio" name="rz_soort" value="overig"> Overig</label>
+            </fieldset>
+          </div>
+          <div class="vraag">
+            <label>Waarde in het economisch verkeer</label>
+            <div class="euro-wrap"><input type="number" id="bedrag_roerende_zaak" min="0" placeholder="0"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3n: VERZEKERING (nieuw per 2026) -->
+      <div class="conditional" id="blok-verzekering">
+        <div class="skip-notice visible">
+          Vragen 3e t/m 3m en 3o worden overgeslagen. <strong>Nieuwe categorie per 2026.</strong>
+        </div>
+        <div class="sub-section">
+          <h3>3n. Verzekeringsproduct (nieuw per 2026)</h3>
+          <div class="vraag"><label>3n.1 Polisnummer</label><input type="text" id="verz_polis"></div>
+          <div class="vraag">
+            <label>3n.2 Soort schenking</label>
+            <fieldset class="radio-group" id="rg-verz-soort">
+              <label><input type="radio" name="verz_soort" value="eenmalig"> Eenmalige uitkering uit een kapitaalverzekering</label>
+              <label><input type="radio" name="verz_soort" value="termijnen"> Eén of meer termijnen uit een periodieke uitkering</label>
+              <label><input type="radio" name="verz_soort" value="alle_termijnen"> Alle termijnen uit een periodieke uitkering</label>
+              <label><input type="radio" name="verz_soort" value="polis"> Een (deel van een) lopende verzekering (polis)</label>
+              <label><input type="radio" name="verz_soort" value="premies"> Premies betaald voor een verzekering op uw naam</label>
+            </fieldset>
+          </div>
+          <div class="vraag">
+            <label>Bedrag</label>
+            <div class="euro-wrap"><input type="number" id="bedrag_verzekering" min="0" placeholder="0"></div>
+          </div>
+          <div class="vraag">
+            <label>Betaalt u over de uitkering inkomstenbelasting in box 1?</label>
+            <fieldset class="radio-group" style="flex-direction:row; gap:20px;">
+              <label><input type="radio" name="verz_ib" value="nee"> Nee</label>
+              <label><input type="radio" name="verz_ib" value="ja"> Ja</label>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3o: ANDERE SCHENKING -->
+      <div class="conditional" id="blok-andere-schenking">
+        <div class="skip-notice visible">
+          Vragen 3e t/m 3n (10 andere categorieën) worden overgeslagen.
+        </div>
+        <div class="sub-section">
+          <h3>3o. Andere schenking</h3>
+          <div class="vraag">
+            <label>Omschrijving van de schenking</label>
+            <textarea id="andere_omschrijving" rows="3" style="max-width:100%;"></textarea>
+          </div>
+          <div class="vraag">
+            <label>Waarde van de schenking</label>
+            <div class="euro-wrap"><input type="number" id="bedrag_andere" min="0" placeholder="0"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="wizard-nav">
+      <button class="btn btn-secondary" id="btn-3-prev">← Vorige</button>
+      <button class="btn btn-primary" id="btn-3-next">Volgende →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- STAP 4 — VRIJSTELLINGEN                         -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="wizard-step" id="step-4">
+    <div class="card">
+      <span class="step-nr">Stap 4 van 6</span>
+      <h2>Eenmalige en bijzondere vrijstellingen</h2>
+
+      <div class="alert alert-info" id="vrijst-alert">
+        De jaarlijkse vrijstelling wordt automatisch toegepast. U hoeft die niet zelf af te trekken.
+      </div>
+
+      <div class="skip-notice" id="skip-vrijstelling-leeftijd">
+        De eenmalig verhoogde vrijstelling (€ 33.129) en studievrijstelling (€ 69.009) worden overgeslagen — de ontvanger voldoet niet aan de leeftijdseis (18–40 jaar) of de relatie is niet van toepassing.
+      </div>
+
+      <div class="vraag">
+        <label>4a. Wil de ontvanger gebruikmaken van een eenmalige of bijzondere vrijstelling?</label>
+        <fieldset class="radio-group" id="rg-vrijstelling">
+          <label><input type="radio" name="gebruik_vrijstelling" value="nee"> Nee — ga door naar stap 5</label>
+          <label><input type="radio" name="gebruik_vrijstelling" value="ja"> Ja</label>
+        </fieldset>
+      </div>
+
+      <div class="conditional" id="blok-vrijstelling-detail">
+        <div class="vraag">
+          <label>4b. Van welke vrijstelling wil de ontvanger gebruikmaken?</label>
+          <div class="toelichting">U mag maar 1 vrijstelling kiezen.</div>
+          <fieldset class="radio-group" id="rg-vrijstelling-soort">
+            <label id="opt-eenmalig" style="display:none"><input type="radio" name="vrijstelling_soort" value="eenmalig_verhoogd"> Eenmalig verhoogde vrijstelling (max. € 33.129) — alleen 18–40 jaar</label>
+            <label id="opt-studie" style="display:none"><input type="radio" name="vrijstelling_soort" value="studie"> Verhoogde vrijstelling voor dure studie (max. € 69.009) — alleen 18–40 jaar</label>
+            <label><input type="radio" name="vrijstelling_soort" value="moreel"> Bijzonder: schenking vanwege een morele verplichting</label>
+            <label><input type="radio" name="vrijstelling_soort" value="schulden"> Bijzonder: schenking om dringende schulden af te lossen</label>
+            <label><input type="radio" name="vrijstelling_soort" value="anbi"> Bijzonder: schenking gedaan aan of door een ANBI</label>
+            <label><input type="radio" name="vrijstelling_soort" value="sbbi"> Bijzonder: schenking gedaan aan een (steunstichting) SBBI</label>
+            <label><input type="radio" name="vrijstelling_soort" value="ib_belast"> Bijzonder: schenking al belast met inkomstenbelasting</label>
+            <label><input type="radio" name="vrijstelling_soort" value="overig"> Overige bijzondere vrijstelling</label>
+          </fieldset>
+        </div>
+
+        <div class="vraag">
+          <label>4c. Heeft de ontvanger een echtgenoot of (geregistreerde) partner?</label>
+          <fieldset class="radio-group" id="rg-4c" style="flex-direction:row; gap:20px;">
+            <label><input type="radio" name="q4c" value="nee"> Nee</label>
+            <label><input type="radio" name="q4c" value="ja"> Ja — vul BSN en geboortedatum partner in</label>
+          </fieldset>
+        </div>
+        <div class="conditional" id="blok-partner-4c">
+          <div class="input-row">
+            <div class="vraag"><label>BSN partner</label><input type="text" id="partner_bsn" maxlength="9" placeholder="000000000"></div>
+            <div class="vraag"><label>Geboortedatum partner</label><input type="date" id="partner_gebdat"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wizard-nav">
+      <button class="btn btn-secondary" id="btn-4-prev">← Vorige</button>
+      <button class="btn btn-primary" id="btn-4-next">Volgende →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- STAP 5 — AANSLAG                                -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="wizard-step" id="step-5">
+    <div class="card">
+      <span class="step-nr">Stap 5 van 6</span>
+      <h2>Aanslag schenkbelasting</h2>
+
+      <div class="vraag">
+        <label>5c. Wie betaalt de schenkbelasting (als die verschuldigd is)?</label>
+        <div class="toelichting">Let op: dit is een verplicht veld, ook als u verwacht geen belasting te betalen.</div>
+        <fieldset class="radio-group" id="rg-betaler">
+          <label><input type="radio" name="betaler" value="ontvanger"> De ontvanger van de schenking</label>
+          <label><input type="radio" name="betaler" value="schenker"> De schenker (leidt tot hogere grondslag — brutering)</label>
+        </fieldset>
+      </div>
+
+      <div class="vraag">
+        <label>5a. Is over deze schenking ook schenkbelasting of soortgelijke belasting betaald buiten Nederland?</label>
+        <fieldset class="radio-group" id="rg-buitenland" style="flex-direction:row; gap:20px;">
+          <label><input type="radio" name="buitenland" value="nee"> Nee</label>
+          <label><input type="radio" name="buitenland" value="ja"> Ja</label>
+        </fieldset>
+      </div>
+
+      <div class="conditional" id="blok-buitenland">
+        <div class="input-row">
+          <div class="vraag">
+            <label>Betaald bedrag buitenlandse belasting</label>
+            <div class="euro-wrap"><input type="number" id="buitenland_bedrag" min="0" placeholder="0"></div>
+          </div>
+          <div class="vraag"><label>Landcode</label><input type="text" id="buitenland_land" maxlength="2" placeholder="DE"></div>
+        </div>
+      </div>
+
+      <div class="skip-notice" id="skip-5b">
+        Vragen 5b (overdrachtsbelasting) worden overgeslagen — niet van toepassing: er is geen onroerende zaak geschonken.
+      </div>
+
+      <div class="conditional" id="blok-ovb">
+        <div class="sub-section">
+          <h3>5b. Overdrachtsbelasting</h3>
+          <div class="vraag">
+            <label>5b.1 Is er ook overdrachtsbelasting betaald?</label>
+            <fieldset class="radio-group" style="flex-direction:row; gap:20px;">
+              <label><input type="radio" name="ovb" value="nee"> Nee</label>
+              <label><input type="radio" name="ovb" value="ja"> Ja</label>
+            </fieldset>
+          </div>
+          <div class="vraag">
+            <label>5b.2 Bedrag waarover overdrachtsbelasting is berekend</label>
+            <div class="euro-wrap"><input type="number" id="ovb_grondslag" min="0" placeholder="0"></div>
+          </div>
+          <div class="vraag">
+            <label>5b.3 Betaald bedrag overdrachtsbelasting</label>
+            <div class="euro-wrap"><input type="number" id="ovb_betaald" min="0" placeholder="0"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="wizard-nav">
+      <button class="btn btn-secondary" id="btn-5-prev">← Vorige</button>
+      <button class="btn btn-primary" id="btn-5-next">Volgende →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- STAP 6 — SAMENVATTING & BEREKENING              -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="wizard-step" id="step-6">
+    <div class="card">
+      <span class="step-nr">Stap 6 van 6 — Controleer uw aangifte</span>
+      <h2>Samenvatting</h2>
+
+      <div id="samenvatting-inhoud"></div>
+
+      <div id="belasting-berekening-wrap"></div>
+
+      <div style="margin-top:24px; padding:16px; background:var(--bd-grijs-licht); border-radius:var(--radius); font-size:13px; color:var(--bd-grijs);">
+        <strong>Vergelijking:</strong> Huidig papieren formulier: <strong>~115 velden</strong> op 15 pagina's.
+        <br>Uw route in deze wizard: zie teller bovenaan.
+        <br><em>Na akkoord kunt u de aangifte digitaal inzenden via Mijn Belastingdienst, of printen voor inzending naar kantoor Eindhoven.</em>
+      </div>
+    </div>
+    <div class="wizard-nav">
+      <button class="btn btn-secondary" id="btn-6-prev">← Vorige</button>
+      <button class="btn btn-success" id="btn-6-send">✓ Aangifte gereed voor inzending</button>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+const state = {
+  currentStep: 1,
+  totalSteps: 6,
+  answers: {},
+  skippedCount: 0
+};
+
+// Question counts per section (approximate, based on PDF analysis)
+const QCOUNTS = {
+  total: 115,
+  ontvanger_instelling_skip: 7,   // 1d,1e,1f,1g,1h,1i,1j
+  relatie_standaard_skip: 3,       // 1h, 1i, 1j
+  schenker_instelling_skip: 3,     // 2d, 2e, 2f
+  apv_nee_skip: 4,                 // 2h, 2i, 2j, 2k
+  soort_skips: {
+    geld:               68, // alle andere soort-secties (3f t/m 3o = ~70 velden)
+    kwijtschelding:     66,
+    roerende_zaak:      64,
+    schuldigerkenning:  63,
+    vruchtgebruik:      62,
+    effecten:           65,
+    periodieke_uitkering: 58,
+    verzekering:        54,
+    onroerende_zaak:    50,
+    ondernemisvermogen: 40,
+    andere_schenking:   65
+  },
+  vrijstelling_nee_skip: 12,       // 4b en 4c
+  buitenland_nee_skip: 2,          // 5a-detail
+  ovb_niet_oz_skip: 4              // 5b.1-5b.5
+};
+
+// ══════════════════════════════════════
+// STEPS CONFIG
+// ══════════════════════════════════════
+const STEP_LABELS = [
+  '', // 0 placeholder
+  'Ontvanger',
+  'Schenker',
+  'De schenking',
+  'Vrijstellingen',
+  'Aanslag',
+  'Samenvatting'
+];
+
+// ══════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════
+function show(el) { if(el) { el.classList.add('visible'); el.style.display=''; } }
+function hide(el) { if(el) { el.classList.remove('visible'); el.style.display='none'; } }
+function conditional(el, condition) { condition ? show(el) : hide(el); }
+function $(id) { return document.getElementById(id); }
+
+function formatEuro(n) {
+  if (isNaN(n) || n === null || n === '') return '—';
+  return '€ ' + Math.floor(n).toLocaleString('nl-NL');
+}
+
+// ══════════════════════════════════════
+// SKIP COUNTER
+// ══════════════════════════════════════
+function calcSkipped() {
+  let s = 0;
+  const a = state.answers;
+
+  if (a.ontvanger_type === 'instelling') {
+    s += QCOUNTS.ontvanger_instelling_skip;
+  } else {
+    const rel = a.relatie;
+    if (rel && rel !== 'aanstaande_partner' && rel !== 'ex_partner') {
+      s += QCOUNTS.relatie_standaard_skip;
+    }
+  }
+  if (a.schenker_type === 'instelling') s += QCOUNTS.schenker_instelling_skip;
+  if (a.apv === 'nee') s += QCOUNTS.apv_nee_skip;
+
+  const soort = a.soort_schenking;
+  if (soort && QCOUNTS.soort_skips[soort]) s += QCOUNTS.soort_skips[soort];
+
+  if (a.gebruik_vrijstelling === 'nee') s += QCOUNTS.vrijstelling_nee_skip;
+  if (a.buitenland === 'nee') s += QCOUNTS.buitenland_nee_skip;
+  if (soort && soort !== 'onroerende_zaak') s += QCOUNTS.ovb_niet_oz_skip;
+
+  return Math.min(s, QCOUNTS.total - 10);
+}
+
+function updateCounter() {
+  const skipped = calcSkipped();
+  state.skippedCount = skipped;
+  const relevant = Math.max(QCOUNTS.total - skipped, 10);
+  $('cntOvergeslagen').textContent = skipped;
+  $('cntRelevant').textContent = relevant;
+}
+
+// ══════════════════════════════════════
+// PROGRESS STEPS
+// ══════════════════════════════════════
+function renderProgress() {
+  const container = $('progressSteps');
+  container.innerHTML = '';
+  for (let i = 1; i <= state.totalSteps; i++) {
+    const item = document.createElement('div');
+    item.className = 'step-item';
+    if (i < state.currentStep) item.classList.add('done');
+    else if (i === state.currentStep) item.classList.add('active');
+
+    const circle = document.createElement('div');
+    circle.className = 'step-circle';
+    circle.textContent = i < state.currentStep ? '✓' : i;
+    item.appendChild(circle);
+
+    const label = document.createElement('div');
+    label.className = 'step-label';
+    label.textContent = STEP_LABELS[i];
+    item.appendChild(label);
+
+    container.appendChild(item);
+  }
+}
+
+// ══════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════
+function goToStep(n) {
+  $('step-' + state.currentStep).classList.remove('active');
+  state.currentStep = n;
+  $('step-' + n).classList.add('active');
+  renderProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (n === 6) renderSamenvatting();
+}
+
+// ══════════════════════════════════════
+// RADIO HIGHLIGHTING
+// ══════════════════════════════════════
+function setupRadioHighlight(name) {
+  document.querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+    radio.addEventListener('change', () => {
+      const group = radio.closest('.radio-group');
+      if (!group) return;
+      group.querySelectorAll('label').forEach(l => l.classList.remove('selected'));
+      radio.closest('label').classList.add('selected');
+    });
+  });
+}
+
+// ══════════════════════════════════════
+// CONDITIONAL LOGIC — STAP 1
+// ══════════════════════════════════════
+function setupStep1() {
+  document.querySelectorAll('input[name="ontvanger_type"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const v = r.value;
+      state.answers.ontvanger_type = v;
+      conditional($('blok-ontvanger-instelling'), v === 'instelling');
+      conditional($('blok-ontvanger-persoon'),    v === 'persoon');
+      updateCounter();
+    });
+  });
+
+  $('ontvanger_relatie').addEventListener('change', function() {
+    const v = this.value;
+    state.answers.relatie = v;
+    conditional($('blok-aanstaande-partner'), v === 'aanstaande_partner');
+    conditional($('blok-ex-partner'),         v === 'ex_partner');
+    const skipStandaard = v && v !== 'aanstaande_partner' && v !== 'ex_partner';
+    conditional($('skip-1h1j'), skipStandaard);
+    updateCounter();
+    updateVrijstellingLeeftijd();
+  });
+
+  $('ontvanger_geboortedatum').addEventListener('change', updateVrijstellingLeeftijd);
+
+  $('btn-1-next').addEventListener('click', () => goToStep(2));
+}
+
+// ══════════════════════════════════════
+// CONDITIONAL LOGIC — STAP 2
+// ══════════════════════════════════════
+function setupStep2() {
+  document.querySelectorAll('input[name="schenker_type"]').forEach(r => {
+    r.addEventListener('change', () => {
+      state.answers.schenker_type = r.value;
+      conditional($('blok-schenker-instelling'), r.value === 'instelling');
+      conditional($('blok-schenker-persoon'),    r.value === 'persoon');
+      updateCounter();
+    });
+  });
+
+  document.querySelectorAll('input[name="apv"]').forEach(r => {
+    r.addEventListener('change', () => {
+      state.answers.apv = r.value;
+      conditional($('blok-apv'),     r.value === 'ja');
+      conditional($('skip-apv'),     r.value === 'nee');
+      updateCounter();
+    });
+  });
+
+  $('btn-2-prev').addEventListener('click', () => goToStep(1));
+  $('btn-2-next').addEventListener('click', () => goToStep(3));
+}
+
+// ══════════════════════════════════════
+// CONDITIONAL LOGIC — STAP 3
+// ══════════════════════════════════════
+const SOORT_BLOKKEN = [
+  'geld','onroerende-zaak','kwijtschelding','effecten','onderneming',
+  'schuldigerkenning','vruchtgebruik','periodieke-uitkering',
+  'roerende-zaak','verzekering','andere-schenking'
+];
+
+const SOORT_MAP = {
+  geld:                'geld',
+  onroerende_zaak:     'onroerende-zaak',
+  kwijtschelding:      'kwijtschelding',
+  effecten:            'effecten',
+  ondernemisvermogen:  'onderneming',
+  schuldigerkenning:   'schuldigerkenning',
+  vruchtgebruik:       'vruchtgebruik',
+  periodieke_uitkering:'periodieke-uitkering',
+  roerende_zaak:       'roerende-zaak',
+  verzekering:         'verzekering',
+  andere_schenking:    'andere-schenking'
+};
+
+function setupStep3() {
+  $('soort_schenking').addEventListener('change', function() {
+    const v = this.value;
+    state.answers.soort_schenking = v;
+
+    // Hide all
+    SOORT_BLOKKEN.forEach(b => {
+      const el = $('blok-' + b);
+      if (el) el.classList.remove('visible');
+    });
+
+    // Show selected
+    const blok = SOORT_MAP[v];
+    if (blok) {
+      const el = $('blok-' + blok);
+      if (el) el.classList.add('visible');
+    }
+
+    // OVB sectie stap 5
+    conditional($('blok-ovb'),   v === 'onroerende_zaak');
+    conditional($('skip-5b'),    v !== 'onroerende_zaak');
+
+    updateCounter();
+    updateVrijstellingLeeftijd();
+  });
+
+  // Live belasting preview voor geld
+  $('bedrag_geld').addEventListener('input', updateBelastingPreview);
+
+  // Onroerende zaak — woning sub-conditional
+  document.querySelectorAll('input[name="oz_woning"]').forEach(r => {
+    r.addEventListener('change', () => {
+      conditional($('blok-oz-woz'), r.value === 'ja');
+    });
+  });
+  document.querySelectorAll('input[name="oz_verhuur"]').forEach(r => {
+    r.addEventListener('change', () => {
+      conditional($('blok-oz-verhuurdetails'), r.value === 'ja');
+    });
+  });
+
+  // BOR
+  document.querySelectorAll('input[name="bor"]').forEach(r => {
+    r.addEventListener('change', () => {
+      conditional($('blok-bor'), r.value === 'ja');
+    });
+  });
+
+  $('btn-3-prev').addEventListener('click', () => goToStep(2));
+  $('btn-3-next').addEventListener('click', () => goToStep(4));
+}
+
+// ══════════════════════════════════════
+// BELASTING PREVIEW (stap 3)
+// ══════════════════════════════════════
+function bereken(bedrag, relatie) {
+  const isKind = ['kind','stiefkind','pleegkind'].includes(relatie);
+  const isPartner = ['partner','samenwonend'].includes(relatie);
+  const isKleinkind = relatie === 'kleinkind';
+
+  let vrijstelling = isKind || isPartner ? 6908 : 2769;
+  let belastbaar = Math.max(0, bedrag - vrijstelling);
+
+  let tarief1, tarief2;
+  if (isPartner || isKind || isKleinkind) {
+    tarief1 = isKleinkind ? 0.18 : 0.10;
+    tarief2 = isKleinkind ? 0.36 : 0.20;
+  } else {
+    tarief1 = 0.30;
+    tarief2 = 0.40;
+  }
+
+  const grens = 158669;
+  let belasting = 0;
+  if (belastbaar <= grens) {
+    belasting = belastbaar * tarief1;
+  } else {
+    belasting = grens * tarief1 + (belastbaar - grens) * tarief2;
+  }
+  return { vrijstelling, belastbaar, belasting: Math.floor(belasting) };
+}
+
+function updateBelastingPreview() {
+  const bedrag = parseFloat($('bedrag_geld').value) || 0;
+  const relatie = state.answers.relatie || '';
+  const wrap = $('belasting-preview-geld');
+  if (!bedrag || !relatie) { wrap.innerHTML = ''; return; }
+
+  const { vrijstelling, belastbaar, belasting } = bereken(bedrag, relatie);
+
+  wrap.innerHTML = `
+    <div class="belasting-card">
+      <h3>Indicatieve berekening schenkbelasting 2026</h3>
+      <div class="belasting-row"><span>Bedrag schenking</span><span>${formatEuro(bedrag)}</span></div>
+      <div class="belasting-row"><span>Jaarlijkse vrijstelling (${['kind','stiefkind','pleegkind','partner','samenwonend'].includes(relatie) ? '€ 6.908' : '€ 2.769'})</span><span>− ${formatEuro(vrijstelling)}</span></div>
+      <div class="belasting-row"><span>Belastbare verkrijging</span><span>${formatEuro(belastbaar)}</span></div>
+      <div class="belasting-row total"><span>Indicatieve schenkbelasting</span><span>${belasting === 0 ? 'Nihil' : formatEuro(belasting)}</span></div>
+    </div>`;
+}
+
+// ══════════════════════════════════════
+// CONDITIONAL LOGIC — STAP 4 (VRIJSTELLINGEN)
+// ══════════════════════════════════════
+function updateVrijstellingLeeftijd() {
+  const gebdatStr = $('ontvanger_geboortedatum').value;
+  const relatie = state.answers.relatie || '';
+  const kindRelaties = ['kind','stiefkind','pleegkind'];
+  const isKind = kindRelaties.includes(relatie);
+
+  let leeftijdOK = false;
+  if (gebdatStr) {
+    const geb = new Date(gebdatStr);
+    const nu = new Date('2026-01-01');
+    const leeftijd = (nu - geb) / (365.25 * 24 * 3600 * 1000);
+    leeftijdOK = leeftijd >= 18 && leeftijd <= 40;
+  }
+
+  const toonVerhoogd = isKind && leeftijdOK;
+  const optEenmalig = $('opt-eenmalig');
+  const optStudie  = $('opt-studie');
+  if (optEenmalig) optEenmalig.style.display = toonVerhoogd ? '' : 'none';
+  if (optStudie)   optStudie.style.display   = toonVerhoogd ? '' : 'none';
+
+  const skipEl = $('skip-vrijstelling-leeftijd');
+  if (skipEl) conditional(skipEl, !toonVerhoogd);
+}
+
+function setupStep4() {
+  document.querySelectorAll('input[name="gebruik_vrijstelling"]').forEach(r => {
+    r.addEventListener('change', () => {
+      state.answers.gebruik_vrijstelling = r.value;
+      conditional($('blok-vrijstelling-detail'), r.value === 'ja');
+      updateCounter();
+    });
+  });
+
+  document.querySelectorAll('input[name="q4c"]').forEach(r => {
+    r.addEventListener('change', () => {
+      conditional($('blok-partner-4c'), r.value === 'ja');
+    });
+  });
+
+  $('btn-4-prev').addEventListener('click', () => goToStep(3));
+  $('btn-4-next').addEventListener('click', () => goToStep(5));
+}
+
+// ══════════════════════════════════════
+// CONDITIONAL LOGIC — STAP 5
+// ══════════════════════════════════════
+function setupStep5() {
+  document.querySelectorAll('input[name="buitenland"]').forEach(r => {
+    r.addEventListener('change', () => {
+      state.answers.buitenland = r.value;
+      conditional($('blok-buitenland'), r.value === 'ja');
+      updateCounter();
+    });
+  });
+
+  $('btn-5-prev').addEventListener('click', () => goToStep(4));
+  $('btn-5-next').addEventListener('click', () => goToStep(6));
+}
+
+// ══════════════════════════════════════
+// SAMENVATTING
+// ══════════════════════════════════════
+function val(id) {
+  const el = $(id);
+  if (!el) return '—';
+  return el.value || '—';
+}
+function radioVal(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : '—';
+}
+function label(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  if (!el) return '—';
+  return el.closest('label').textContent.trim();
+}
+
+const SOORT_LABELS = {
+  geld: 'Geld', onroerende_zaak: 'Woning / onroerende zaak',
+  kwijtschelding: 'Kwijtschelding schuld', effecten: 'Aandelen / effecten',
+  ondernemisvermogen: 'Ondernemingsvermogen', schuldigerkenning: 'Schuldigerkenning op papier',
+  vruchtgebruik: 'Vruchtgebruik', periodieke_uitkering: 'Periodieke uitkering',
+  roerende_zaak: 'Roerende zaak', verzekering: 'Verzekeringsproduct', andere_schenking: 'Andere schenking'
+};
+
+function bedragForSoort(soort) {
+  const ids = {
+    geld: 'bedrag_geld', kwijtschelding: 'bedrag_kwijtschelding',
+    effecten: 'bedrag_effecten', schuldigerkenning: 'bedrag_schuldigerkenning',
+    vruchtgebruik: 'bedrag_vruchtgebruik', roerende_zaak: 'bedrag_roerende_zaak',
+    andere_schenking: 'bedrag_andere', verzekering: 'bedrag_verzekering',
+    ondernemisvermogen: 'ov_gcwaarde'
+  };
+  return ids[soort] ? val(ids[soort]) : '—';
+}
+
+function renderSamenvatting() {
+  const a = state.answers;
+  const soortLabel = SOORT_LABELS[a.soort_schenking] || a.soort_schenking || '—';
+
+  const rows = [
+    ['Ontvanger', a.ontvanger_type === 'instelling'
+      ? val('ontvanger_naam_instelling')
+      : [val('ontvanger_voorletters'), val('ontvanger_achternaam')].filter(x=>x!=='—').join(' ') || '—'],
+    ['BSN ontvanger', a.ontvanger_type === 'persoon' ? val('ontvanger_bsn') : 'n.v.t.'],
+    ['Geboortedatum ontvanger', a.ontvanger_type === 'persoon' ? val('ontvanger_geboortedatum') : 'n.v.t.'],
+    ['Relatie met schenker', a.relatie || '—'],
+    ['Schenker', a.schenker_type === 'instelling'
+      ? val('schenker_naam_instelling')
+      : [val('schenker_voorletters'), val('schenker_achternaam')].filter(x=>x!=='—').join(' ') || '—'],
+    ['Datum schenking', val('schenking_datum')],
+    ['Soort schenking', soortLabel],
+    ['Bedrag', formatEuro(parseFloat(bedragForSoort(a.soort_schenking)))],
+    ['Betaler schenkbelasting', radioVal('betaler')],
+    ['Gebruik bijzondere vrijstelling', a.gebruik_vrijstelling || '—'],
+  ];
+
+  let html = `<table class="samenvatting-tabel"><thead><tr><th>Gegeven</th><th>Uw antwoord</th></tr></thead><tbody>`;
+  rows.forEach(([k,v]) => { html += `<tr><td>${k}</td><td>${v}</td></tr>`; });
+  html += `</tbody></table>`;
+
+  const skipped = calcSkipped();
+  const relevant = Math.max(QCOUNTS.total - skipped, 10);
+  html += `<div style="margin-top:16px; padding:12px 16px; background:var(--bd-blauw); color:white; border-radius:4px; font-size:14px;">
+    <strong>Resultaat slimme route:</strong>
+    U heeft <span style="color:var(--bd-oranje); font-weight:700; font-size:18px;">${skipped}</span> van de ${QCOUNTS.total} velden overgeslagen.
+    Uw aangifte bevatte slechts <span style="color:var(--bd-oranje); font-weight:700; font-size:18px;">${relevant}</span> relevante velden.
+  </div>`;
+
+  $('samenvatting-inhoud').innerHTML = html;
+
+  // Belastingberekening
+  const soort = a.soort_schenking;
+  const bedragEl = bedragForSoort(soort);
+  const bedragVal = parseFloat(bedragEl) || 0;
+  if (['geld','kwijtschelding'].includes(soort) && bedragVal > 0 && a.relatie) {
+    const { vrijstelling, belastbaar, belasting } = bereken(bedragVal, a.relatie);
+    $('belasting-berekening-wrap').innerHTML = `
+      <div class="belasting-card" style="margin-top:20px;">
+        <h3>Indicatieve berekening schenkbelasting 2026</h3>
+        <div class="belasting-row"><span>Bedrag schenking</span><span>${formatEuro(bedragVal)}</span></div>
+        <div class="belasting-row"><span>Jaarlijkse vrijstelling</span><span>− ${formatEuro(vrijstelling)}</span></div>
+        <div class="belasting-row"><span>Belastbare verkrijging</span><span>${formatEuro(belastbaar)}</span></div>
+        <div class="belasting-row total"><span>Indicatieve schenkbelasting</span><span>${belasting === 0 ? 'Nihil' : formatEuro(belasting)}</span></div>
+      </div>`;
+  } else {
+    $('belasting-berekening-wrap').innerHTML = '';
+  }
+}
+
+// ══════════════════════════════════════
+// STEP 6 BUTTONS
+// ══════════════════════════════════════
+function setupStep6() {
+  $('btn-6-prev').addEventListener('click', () => goToStep(5));
+  $('btn-6-send').addEventListener('click', () => {
+    alert('In het definitieve systeem zou hier de aangifte worden ingediend via Mijn Belastingdienst.\n\nDit is een concept mock-up ter demonstratie.');
+  });
+}
+
+// ══════════════════════════════════════
+// RADIO NAMES TO HIGHLIGHT
+// ══════════════════════════════════════
+const ALL_RADIO_NAMES = [
+  'ontvanger_type','schenker_type','apv','herroepbaar','eerder',
+  'oz_woning','oz_verhuur','oz_marktconform','oz_huurder','oz_geheel',
+  'effecten_soort','bor','bezitseis','schuld_rente_soort',
+  'stamkapitaal','pu_leven','rz_soort','verz_soort','verz_ib',
+  'gebruik_vrijstelling','vrijstelling_soort','q4c',
+  'betaler','buitenland','ovb','q1h','q1i','q1j'
+];
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+function init() {
+  renderProgress();
+  setupStep1();
+  setupStep2();
+  setupStep3();
+  setupStep4();
+  setupStep5();
+  setupStep6();
+  ALL_RADIO_NAMES.forEach(setupRadioHighlight);
+
+  // Initial state
+  $('cntRelevant').textContent = '—';
+  $('cntOvergeslagen').textContent = '0';
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
