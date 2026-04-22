@@ -1,35 +1,36 @@
-# Aangifte Schenkbelasting — Concept & Mock-ups
+# Aangifte Schenkbelasting 2026 — Concept Mock-up
 
-Dit project demonstreert hoe conditionele logica het aangifteformulier schenkbelasting
-aanzienlijk kan verkorten voor de belastingplichtige.
+Interactieve demo die laat zien hoe conditionele logica en een scenario-kiezer
+het aangifteformulier schenkbelasting drastisch kunnen verkorten.
 
-## Structuur
+🌐 **Live demo:** [https://aangifte-schenkbelasting.vercel.app](https://aangifte-schenkbelasting.vercel.app)
+
+---
+
+## Inhoud
 
 ```
 Aangifte-schenkbelasting/
 │
-├── README.md                          ← dit bestand
+├── index.html                          ← v2 live demo (Vercel root)
 │
 └── mockups/
-    └── v1-conditionele-logica/
-        └── aangifte-schenkbelasting-2026.html   ← interactieve demo
+    ├── v1-conditionele-logica/
+    │   └── aangifte-schenkbelasting-2026.html
+    └── v2-scenario-kiezer/
+        └── aangifte-schenkbelasting-2026-v2.html
 ```
 
-## Achtergrond
+## Versies
 
-Het huidige formulier (beschikbaar via [belastingdienst.nl](https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/themaoverstijgend/programmas_en_formulieren/aangifte-schenkbelasting-2026))
-telt ~115 velden verspreid over 15 pagina's. Voor de meest voorkomende situatie
-(geldschenking van ouder aan kind) zijn slechts ~18 velden relevant.
-
-## Mock-up versies
-
-| Versie | Map | Beschrijving |
-|--------|-----|-------------|
-| v1 | `mockups/v1-conditionele-logica/` | Wizard met conditionele logica — toont alleen relevante velden. Live belastingberekening voor geldschenkingen. |
+| Versie | Beschrijving |
+|--------|-------------|
+| **v1** | Wizard met skip-teller — toont hoeveel velden worden overgeslagen |
+| **v2** | Scenario-kiezer, exacte BD-opmaak, live belastingberekening |
 
 ## Gebruik
 
-Open het HTML-bestand in een browser — geen installatie vereist.
+Open `index.html` in een browser of bezoek de live demo — geen installatie vereist.
 
 ---
 *Concept — uitsluitend bedoeld als demonstratie van verbeterde UX.*
