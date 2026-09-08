@@ -32,7 +32,6 @@ Elke pagina is een object met een lijst `velden`. Een veld ziet er zo uit:
 | iets niet verplicht maken    | `verplicht: false`                                              |
 | een vraag per variant anders | `label: { zelf: "Hebt u…", kind: "Heeft uw kind…" }`            |
 | vrijstellingsbedragen        | `vrijstelling: { ouder: 6908, overig: 2769 }`                   |
-| de ingelogde demo-persoon    | `gebruiker: { naam, bsn, geboortedatum }`                       |
 
 Veldtypen: `alinea`, `lijst`, `kop`, `info`, `keuze`, `janee`, `tekst`, `bedrag`, `datum`, `checkboxgroep`, `postcode_plaats`, `weergave`, `tabel`, `knop`, `herhaal`.
 
@@ -47,11 +46,15 @@ Open `index.html?dev=1`. Velden met `reconstructie: true` — niet letterlijk in
 - e-mail/telefoonvelden bij contactvoorkeur
 - de **ontvangstbevestiging** (na daadwerkelijk verzenden)
 
+## Gegevens hergebruiken (JSON → GSP)
+
+Er zijn geen vooringevulde gegevens; alles wordt in het formulier ingevuld. Op de pagina *Overzicht* en op de *Ontvangstbevestiging* staat de knop **Download gegevens (JSON)**. Die levert één gestructureerd bestand (`aangifte-schenkbelasting-2026.json`) met alle antwoorden in schone vorm: datums als `jjjj-mm-dd`, bedragen als getallen, ja/nee als `true`/`false`, één object per schenking. Dit is de basis voor een latere vertaling naar het GSP-/XBRL-formaat van de Belastingdienst. In de browserconsole geeft `AANGIFTE_EXPORT()` hetzelfde object.
+
 ## Wat de kopie wél en niet doet
 
 Wél: alle zeven stappen, beide situaties (zelf / minderjarig kind), conditionele vragen, meerdere schenkingen, foutmeldingen met de letterlijke BD-teksten, BSN-controle (11-proef en dubbel gebruik), leeftijdscontrole kind, PDF-overzicht, verzendpagina met voortgangsbalk, verwijderbevestiging, tussentijds opslaan (in de browser).
 
-Niet: echte DigiD, verzending naar de Belastingdienst, belastingberekening (die toont het echte formulier ook niet).
+Niet: echte DigiD (de login accepteert alles), verzending naar de Belastingdienst, belastingberekening (die toont het echte formulier ook niet).
 
 ## Online zetten
 
