@@ -1,9 +1,9 @@
-# Aangifte Schenkbelasting 2026 — Concept Mock-up
+# Aangifte Schenkbelasting 2026 — werkende kopie + mock-ups
 
-Interactieve demo die laat zien hoe conditionele logica en een scenario-kiezer
-het aangifteformulier schenkbelasting drastisch kunnen verkorten.
+Een zelfstandig draaiende kopie van het formulier *Aangifte schenkbelasting 2026*
+uit Mijn Belastingdienst, plus twee eerdere concept-mock-ups met verbetervoorstellen.
 
-🌐 **Live demo:** [https://aangifte-schenkbelasting.vercel.app](https://aangifte-schenkbelasting.vercel.app)
+🌐 **Live:** [https://aangifte-schenkbelasting.vercel.app](https://aangifte-schenkbelasting.vercel.app)
 
 ---
 
@@ -12,25 +12,26 @@ het aangifteformulier schenkbelasting drastisch kunnen verkorten.
 ```
 Aangifte-schenkbelasting/
 │
-├── index.html                          ← v2 live demo (Vercel root)
+├── index.html            ← de kopie van het BD-formulier (Vercel root)
+├── css/stijl.css
+├── js/vragen.js          ← ★ alle vragen, teksten en voorwaarden (hier aanpassen)
+├── js/engine.js
+├── KOPIE.md              ← handleiding voor het aanpassen van de kopie
 │
 └── mockups/
-    ├── v1-conditionele-logica/
-    │   └── aangifte-schenkbelasting-2026.html
-    └── v2-scenario-kiezer/
-        └── aangifte-schenkbelasting-2026-v2.html
+    ├── v1-conditionele-logica/aangifte-schenkbelasting-2026.html
+    └── v2-scenario-kiezer/aangifte-schenkbelasting-2026-v2.html
 ```
 
 ## Versies
 
-| Versie | Beschrijving |
-|--------|-------------|
-| **v1** | Wizard met skip-teller — toont hoeveel velden worden overgeslagen |
-| **v2** | Scenario-kiezer, exacte BD-opmaak, live belastingberekening |
+| Versie | Beschrijving | Link |
+|--------|-------------|------|
+| **Kopie** | 1-op-1 nabouw van het echte formulier, configuratie-gestuurd | [https://aangifte-schenkbelasting.vercel.app](https://aangifte-schenkbelasting.vercel.app) |
+| **v1** | Wizard met skip-teller — toont hoeveel velden worden overgeslagen | [v1](https://aangifte-schenkbelasting.vercel.app/mockups/v1-conditionele-logica/aangifte-schenkbelasting-2026.html) |
+| **v2** | Scenario-kiezer, BD-opmaak, live belastingberekening | [v2](https://aangifte-schenkbelasting.vercel.app/mockups/v2-scenario-kiezer/aangifte-schenkbelasting-2026-v2.html) |
 
-## Gebruik
-
-Open `index.html` in een browser of bezoek de live demo — geen installatie vereist.
+Open `index.html?dev=1` om gereconstrueerde (niet letterlijk waargenomen) velden te markeren.
 
 ---
-*Concept — uitsluitend bedoeld als demonstratie van verbeterde UX.*
+*Demonstratieomgeving — er wordt niets naar de Belastingdienst verstuurd.*
