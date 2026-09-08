@@ -20,8 +20,15 @@
       const o = l.find(o => (typeof o === 'string' ? o : o.w) === w);
       return o ? (typeof o === 'string' ? o : o.l) : (w || '');
     },
-    janee(v) { return v === 'ja' ? 'Ja' : v === 'nee' ? 'Nee' : ''; }
+    janee(v) { return v === 'ja' ? 'Ja' : v === 'nee' ? 'Nee' : ''; },
+    naam(prefix) { const a = S.antwoorden; return [a[prefix + 'voorletters'], a[prefix + 'tussenvoegsel'], a[prefix + 'achternaam']].filter(Boolean).join(' '); }
   });
+
+  /* de ingelogde persoon = wat in het blok "Uw gegevens" is ingevuld */
+  function gebruiker() {
+    const a = S.antwoorden;
+    return { naam: (cfg.naam('u_') || 'Ingelogd').toUpperCase(), bsn: a.u_bsn || '', geboortedatum: a.u_geboortedatum || '' };
+  }
 
   /* ── state ──────────────────────────────────────────────────────────── */
   function leeg() {
@@ -105,9 +112,9 @@
   function dubbelBsn(k, val) {
     const v = String(val || '').replace(/\s/g, '');
     const andere = [];
+    if (k !== 'u_bsn') andere.push(A().u_bsn);
     if (k !== 'kind_bsn' && A().situatie === 'kind') andere.push(A().kind_bsn);
     if (k !== 's_bsn') andere.push(A().s_bsn);
-    andere.push(C.gebruiker.bsn);
     return andere.some(x => x && String(x).replace(/\s/g, '') === v);
   }
 
@@ -281,7 +288,7 @@
     '<span class="rijkslogo-naam">Belastingdienst</span></div>';
 
   function gebruikerMenu(icoon) {
-    return '<div class="gebruiker"><button type="button" class="gebruiker-knop" data-actie="menu"><span class="' + icoon + '"></span>' + esc(C.gebruiker.naam) + '<span class="chevron-omlaag"></span></button>' +
+    return '<div class="gebruiker"><button type="button" class="gebruiker-knop" data-actie="menu"><span class="' + icoon + '"></span>' + esc(gebruiker().naam) + '<span class="chevron-omlaag"></span></button>' +
       (S.menu ? '<div class="gebruiker-menu"><button type="button" data-actie="uitloggen">Uitloggen</button><button type="button" data-actie="herstel">Demo opnieuw beginnen (alles wissen)</button></div>' : '') + '</div>';
   }
   function headerWizard() {
@@ -338,7 +345,7 @@
     }).join('') + '</div>';
   }
   function verzendPagina() {
-    const g = C.gebruiker;
+    const g = gebruiker();
     return headerVerzend(C.verzenden.kop) + '<div class="verzend-pagina">' + voortgang(1) +
       '<h1 class="verzend-titel">' + esc(C.verzenden.titel) + '</h1>' +
       '<div class="verzend-grid"><div class="kaart verzend-links">' +
@@ -355,6 +362,7 @@
       '<h1 class="verzend-titel">' + esc(C.bevestiging.titel) + '</h1>' +
       '<div class="verzend-grid"><div class="kaart verzend-links">' +
       '<button type="button" class="link-knop" data-actie="afdrukken"><span class="ico-print"></span>Afdrukken</button>' +
+      '<button type="button" class="link-knop" data-actie="downloadJson"><span class="ico-opslaan"></span>Download gegevens (JSON)</button>' +
       '<button type="button" class="link-knop" data-actie="naarMbd"><span class="ico-sluiten"></span>Afsluiten</button></div>' +
       '<div class="kaart verzend-rechts bevestiging' + (DEV && C.bevestiging.reconstructie ? ' dev-recon' : '') + '">' + C.bevestiging.html(S.kenmerk, S.verzonden) + '</div></div></div>';
   }
@@ -375,8 +383,8 @@
       '<div class="login-pagina"><div class="kaart login-kaart"><h1>Inloggen op Mijn Belastingdienst</h1>' +
       '<p>Log in met DigiD om uw aangifte schenkbelasting ' + C.jaar + ' te doen.</p>' +
       '<div class="digid-blok"><div class="digid-logo">Digi<span>D</span></div>' +
-      '<div class="rij"><div class="rij-label"><label for="digid_naam">Gebruikersnaam</label></div><div class="rij-invoer"><input type="text" id="digid_naam" value="pietjepuk" autocomplete="off"></div></div>' +
-      '<div class="rij"><div class="rij-label"><label for="digid_ww">Wachtwoord</label></div><div class="rij-invoer"><input type="password" id="digid_ww" value="demodemo" autocomplete="off"></div></div>' +
+      '<div class="rij"><div class="rij-label"><label for="digid_naam">Gebruikersnaam</label></div><div class="rij-invoer"><input type="text" id="digid_naam" autocomplete="off"></div></div>' +
+      '<div class="rij"><div class="rij-label"><label for="digid_ww">Wachtwoord</label></div><div class="rij-invoer"><input type="password" id="digid_ww" autocomplete="off"></div></div>' +
       '<div class="knoppen"><button type="button" class="knop knop-primair" data-actie="login">Inloggen<span class="pijl-rechts wit"></span></button></div></div>' +
       '<p class="klein">Dit is een demonstratieomgeving. Er wordt niets naar de Belastingdienst verstuurd.</p></div></div>';
   }
@@ -443,6 +451,58 @@
     });
     return h;
   }
+
+  /* ── gestructureerde export (basis voor latere GSP/XBRL-mapping) ──── */
+  function isoDatum(s) { const d = parseDatum(s); return d ? d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) : null; }
+  function getal(s) { const n = parseBedrag(s); return isNaN(n) ? null : n; }
+  function persoon(prefix) {
+    const a = A();
+    return { voorletters: a[prefix + 'voorletters'] || null, tussenvoegsel: a[prefix + 'tussenvoegsel'] || null, achternaam: a[prefix + 'achternaam'] || null,
+             bsn: a[prefix + 'bsn'] || null, geboortedatum: isoDatum(a[prefix + 'geboortedatum']) };
+  }
+  function exportData() {
+    const a = A();
+    const jn = v => v === 'ja' ? true : v === 'nee' ? false : null;
+    return {
+      bericht: { soort: 'AangifteSchenkbelasting', belastingjaar: C.jaar, versie: 1, aangemaakt: new Date().toISOString(),
+                 verzonden: S.verzonden || null, kenmerk: S.kenmerk || null },
+      situatie: a.situatie || null,
+      aangever: persoon('u_'),
+      minderjarigKind: a.situatie === 'kind' ? persoon('kind_') : null,
+      anderAdres: jn(a.ander_adres),
+      correspondentie: a.ander_adres === 'ja' ? {
+        naarInstelling: jn(a.corr_instelling),
+        instelling: a.corr_instelling === 'ja' ? { naam: a.corr_naam_instelling || null, rsin: a.corr_rsin || null, beconnummer: a.corr_consulent || null, protocolnummerNotaris: a.corr_notaris || null } : null,
+        adres: { land: a.corr_land || null, straat: a.corr_straat || null, huisnummer: a.corr_huisnummer || null, toevoeging: a.corr_toevoeging || null, postcode: a.corr_postcode || null, plaats: a.corr_plaats || null }
+      } : null,
+      contactvoorkeur: { email: (a.contact || []).includes('email') ? (a.contact_email || true) : false, telefoon: (a.contact || []).includes('telefoon') ? (a.contact_telefoon || true) : false },
+      schenker: {
+        isInstelling: jn(a.instelling),
+        persoon: a.instelling === 'nee' ? Object.assign(persoon('s_'), { relatie: a.relatie || null }) : null,
+        instelling: a.instelling === 'ja' ? { naam: a.s_naam_instelling || null, rsin: a.s_rsin || null, land: a.s_land || null } : null,
+        eerderSchenkingOntvangen: jn(a.eerder),
+        eerderAangifteGedaan: a.eerder === 'ja' ? jn(a.eerder_aangifte) : null
+      },
+      schenkingen: S.schenkingen.map(s => ({
+        soort: s.soort || null, datum: isoDatum(s.datum), bedrag: getal(s.bedrag),
+        adres: s.adres || null, omschrijving: s.omschrijving || null, looptijdJaren: s.looptijd ? +s.looptijd : null,
+        bedrijfsopvolgingsregeling: jn(s.bor), notarieleAkte: jn(s.notarieel),
+        uitAPV: jn(s.apv), herroepbaar: jn(s.herroepbaar),
+        buitenlandseBelasting: s.buitenland === 'ja' ? { bedrag: getal(s.buitenland_bedrag), land: s.buitenland_land || null } : null,
+        betaler: s.betaler || null,
+        vrijstellingen: { verhoogdOfBijzonderGewenst: jn(s.vrij_gebruik), dureStudieNotarieel: jn(s.vrij_studie), eenmaligVerhoogd: jn(s.vrij_verhoogd),
+                          bijzonder: jn(s.vrij_bijzonder), bijzonderSoort: s.vrij_bijzonder_soort || null }
+      })),
+      bijzondereSituaties: a.bijzonder || []
+    };
+  }
+  function downloadJson() {
+    const blob = new Blob([JSON.stringify(exportData(), null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const el = document.createElement('a'); el.href = url; el.download = 'aangifte-schenkbelasting-' + C.jaar + '.json';
+    document.body.appendChild(el); el.click(); el.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  window.AANGIFTE_EXPORT = exportData;
 
   /* ── modals / toast ─────────────────────────────────────────────────── */
   function modalHtml() {
@@ -527,6 +587,7 @@
       case 'help':         S.popover = S.popover === t.dataset.id ? null : t.dataset.id; render(); break;
       case 'helpVenster':  S.modal = 'help'; render(); break;
       case 'toonPdf':      S.modal = 'pdf'; render(); break;
+      case 'downloadJson': downloadJson(); break;
       case 'sluitModal':   if (e.target === t || t.classList.contains('modal-sluit') || t.tagName === 'BUTTON') { S.modal = null; render(); } break;
       case 'afdrukken':    window.print(); break;
       case 'opslaan':      bewaar(); toon('Uw gegevens zijn opgeslagen.'); break;
