@@ -33,14 +33,8 @@ window.AANGIFTE_CONFIG = {
 
   vrijstelling: { ouder: 6908, overig: 2769 },
 
-  // Ingelogde (fictieve) gebruiker — wordt "via DigiD" vooringevuld
-  gebruiker: {
-    naam: "PIETJE PUK",
-    voorletters: "P",
-    achternaam: "Puk",
-    bsn: "111222333",
-    geboortedatum: "01-07-1980"
-  },
+  // Er zijn geen vooringevulde gegevens: alles wordt in het formulier ingevuld.
+  // De naam in de kop en op de verzendpagina komt uit het blok "Uw gegevens".
 
   // Vaste keuzelijsten (op meerdere plekken gebruikt)
   lijsten: {
@@ -134,11 +128,14 @@ window.AANGIFTE_CONFIG = {
       titel: "Algemene gegevens",
       velden: [
 
-        /* — Variant: ik krijg een schenking (gegevens via DigiD) — */
-        { type: "kop", tekst: "Uw gegevens", toon: a => a.situatie === "zelf" },
-        { type: "weergave", label: "Naam",                     waarde: (a, i, cfg) => cfg.gebruiker.naam,          toon: a => a.situatie === "zelf" },
-        { type: "weergave", label: "Burgerservicenummer (bsn)",waarde: (a, i, cfg) => cfg.gebruiker.bsn,           toon: a => a.situatie === "zelf" },
-        { type: "weergave", label: "Geboortedatum",            waarde: (a, i, cfg) => cfg.gebruiker.geboortedatum, toon: a => a.situatie === "zelf" },
+        /* — Uw gegevens (in het echte formulier vooringevuld via DigiD; hier in te vullen) — */
+        { type: "kop", tekst: "Uw gegevens" },
+        { type: "tekst", id: "u_voorletters", label: "Voorletter(s)" },
+        { type: "tekst", id: "u_tussenvoegsel", label: "Tussenvoegsel", verplicht: false },
+        { type: "tekst", id: "u_achternaam", label: "Achternaam" },
+        { type: "tekst", id: "u_bsn", label: "Burgerservicenummer (bsn)", valideer: "bsn", uniekBsn: true, breedte: "vol",
+          help: "Uw burgerservicenummer staat op uw paspoort, identiteitskaart of rijbewijs." },
+        { type: "datum", id: "u_geboortedatum", label: "Geboortedatum" },
         { type: "info", toon: a => a.situatie === "zelf",
           html: "Wij sturen alle correspondentie over deze aangifte naar uw adres. Wilt u liever dat we de aanslag naar een ander adres sturen? Dan kunt u een ander adres invullen. Dit adres gebruiken wij dan ook als we vragen hebben over de aangifte." },
 
@@ -333,10 +330,16 @@ window.AANGIFTE_CONFIG = {
       velden: [
         { type: "info", html: "Controleer de ingevulde gegevens.<br><br>Als alle gegevens kloppen, klikt u op 'Opslaan en naar verzenden' om de aangifte te verzenden.<br>Wilt u nog gegevens aanpassen? Klik dan op 'Vorige' om terug te gaan naar het vorige scherm." },
 
-        { type: "kop", tekst: { zelf: "Uw gegevens", kind: "Gegevens van uw minderjarige kind" } },
-        { type: "weergave", label: "Naam", cursief: true, waarde: (a, i, cfg) => a.situatie === "kind" ? [a.kind_voorletters, a.kind_tussenvoegsel, a.kind_achternaam].filter(Boolean).join(" ") : cfg.gebruiker.naam },
-        { type: "weergave", label: "Burgerservicenummer (bsn)", cursief: true, waarde: (a, i, cfg) => a.situatie === "kind" ? a.kind_bsn : cfg.gebruiker.bsn },
-        { type: "weergave", label: "Geboortedatum", cursief: true, waarde: (a, i, cfg) => a.situatie === "kind" ? a.kind_geboortedatum : cfg.gebruiker.geboortedatum },
+        { type: "kop", tekst: "Uw gegevens" },
+        { type: "weergave", label: "Naam", cursief: true, waarde: (a, i, cfg) => cfg.naam("u_") },
+        { type: "weergave", label: "Burgerservicenummer (bsn)", cursief: true, waarde: a => a.u_bsn },
+        { type: "weergave", label: "Geboortedatum", cursief: true, waarde: a => a.u_geboortedatum },
+
+        { type: "kop", tekst: "Gegevens van uw minderjarige kind", toon: a => a.situatie === "kind" },
+        { type: "weergave", label: "Naam", cursief: true, toon: a => a.situatie === "kind", waarde: (a, i, cfg) => cfg.naam("kind_") },
+        { type: "weergave", label: "Burgerservicenummer (bsn)", cursief: true, toon: a => a.situatie === "kind", waarde: a => a.kind_bsn },
+        { type: "weergave", label: "Geboortedatum", cursief: true, toon: a => a.situatie === "kind", waarde: a => a.kind_geboortedatum },
+
         { type: "weergave", label: "Wilt u voor het toesturen van de aanslag een ander adres doorgeven?", cursief: true, waarde: (a, i, cfg) => cfg.janee(a.ander_adres) },
 
         { type: "kop", tekst: "Gegevens schenker" },
@@ -357,7 +360,8 @@ window.AANGIFTE_CONFIG = {
         { type: "info", html: "Wij leggen de aanslag schenkbelasting op na afloop van het jaar waarin de schenking is gedaan. Dus voor een schenking in 2026, leggen wij de definitieve aanslag op vanaf 2027. U krijgt de aanslag altijd binnen 3 jaar na het doen van aangifte." },
         { type: "kop", tekst: "Al uw ingevulde gegevens op een rij" },
         { type: "alinea", html: "We hebben al uw ingevulde gegevens voor u op een rij gezet in een pdf. Zo kunt u ze gemakkelijk controleren en opslaan of afdrukken." },
-        { type: "knop", label: "Bekijk uw ingevulde gegevens", actie: "toonPdf" }
+        { type: "knop", label: "Bekijk uw ingevulde gegevens", actie: "toonPdf" },
+        { type: "knop", label: "Download gegevens (JSON)", actie: "downloadJson" }
       ]
     },
 
