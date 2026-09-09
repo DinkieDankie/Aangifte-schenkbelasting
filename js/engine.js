@@ -281,11 +281,9 @@
   }
 
   /* ── LAY-OUT: header ────────────────────────────────────────────────── */
-  const LOGO = '<div class="rijkslogo"><svg viewBox="0 0 50 100" width="50" height="100" aria-hidden="true"><rect width="50" height="100" fill="#154273"/>' +
-    '<g fill="#fff"><path d="M25 22c-4 0-7 3-7 6 0 2 1 3 2 4h10c1-1 2-2 2-4 0-3-3-6-7-6z"/><rect x="14" y="33" width="22" height="3"/>' +
-    '<path d="M15 39h20v13c0 6-4 11-10 13-6-2-10-7-10-13V39z"/><path d="M25 44l-3 6h6z" fill="#154273"/><rect x="22" y="52" width="6" height="8" fill="#154273"/>' +
-    '<path d="M9 40c3 4 4 9 4 14 0 3-1 6-2 8M41 40c-3 4-4 9-4 14 0 3 1 6 2 8" stroke="#fff" stroke-width="2" fill="none"/></g></svg>' +
-    '<span class="rijkslogo-naam">Belastingdienst</span></div>';
+  const LOGO = '<div class="rijkslogo"><svg viewBox="0 0 50 100" width="50" height="100" aria-hidden="true">' +
+    '<rect width="50" height="100" fill="#154273"/><path d="M18 0 H32 V22 H18 Z" fill="#fff"/><path d="M14 20 C11 26 11 34 14 40 L18 46 H32 L36 40 C39 34 39 26 36 20 Z" fill="#fff"/><ellipse cx="25" cy="62" rx="18" ry="13.5" fill="#F7D117"/><ellipse cx="6" cy="62" rx="2.6" ry="2" fill="#F7D117"/><ellipse cx="44" cy="62" rx="2.6" ry="2" fill="#F7D117"/><path d="M14 69.5 C19 73.5 31 73.5 36 69.5" stroke="#E5B800" stroke-width="1.4" fill="none" stroke-linecap="round"/><g fill="#fff" stroke="#154273" stroke-width="1.3" stroke-linejoin="round"><path d="M12 40 C10 44 10 51 12.5 56 A3.2 3.2 0 0 0 18.5 56 C19.5 51 19 44 17.5 40 Z"/><path d="M19.5 42 C18.5 47 19 54 20.5 59 A3.2 3.2 0 0 0 26.5 59 C27.5 54 27.5 47 26 42 Z"/><path d="M27.5 42 C26.5 47 27 54 28.5 59 A3.2 3.2 0 0 0 34.5 59 C35.5 54 35 47 33.5 42 Z"/><path d="M34.5 40 C33 44 33.5 51 35.5 56 A3.2 3.2 0 0 0 41.5 56 C43 51 42.5 44 40.5 40 Z"/></g><path d="M13 36 C5 40 3 50 9 56 A3.5 3.5 0 0 0 14 52 C11 48 12 43 16 40 Z" fill="#fff" stroke="#154273" stroke-width="1.3" stroke-linejoin="round"/><path d="M25 79 C29.5 85 29.5 89.5 25 91.5 C20.5 89.5 20.5 85 25 79 Z" fill="#F7D117"/><path d="M16 85 C19 89 19 92 16 93.5 C13 92 13 89 16 85 Z" fill="#F7D117"/><path d="M34 87 C37 91 37 94 34 95.5 C31 94 31 91 34 87 Z" fill="#F7D117"/>' +
+    '</svg><span class="rijkslogo-naam">Demo</span></div>';
 
   function gebruikerMenu(icoon) {
     return '<div class="gebruiker"><button type="button" class="gebruiker-knop" data-actie="menu"><span class="' + icoon + '"></span>' + esc(gebruiker().naam) + '<span class="chevron-omlaag"></span></button>' +
